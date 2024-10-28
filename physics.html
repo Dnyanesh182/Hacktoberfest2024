@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rolling Pencil Simulation</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f4f4f4;
+    }
+    #container {
+      width: 100%;
+      max-width: 800px;
+      height: 400px;
+      position: relative;
+      background: #eaeaea;
+      border: 2px solid #ccc;
+    }
+    #pencil {
+      width: 100px;
+      height: 10px;
+      background: #f8c471;
+      border-radius: 5px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform-origin: center;
+      transform: rotate(0deg);
+      transition: transform 0.05s linear;
+    }
+    #info {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-family: Arial, sans-serif;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="pencil"></div>
+  <div id="info">
+    <p><strong>Physics Simulation: Rolling Pencil</strong></p>
+    <p>Angle: <span id="angle">0</span>°</p>
+    <p>Velocity: <span id="velocity">0</span> m/s</p>
+    <p>Position: <span id="position">0</span> px</p>
+  </div>
+</div>
+
+<script>
+  const pencil = document.getElementById("pencil");
+  const angleSpan = document.getElementById("angle");
+  const velocitySpan = document.getElementById("velocity");
+  const positionSpan = document.getElementById("position");
+
+  let position = 0;  // Position of the pencil in pixels
+  let angle = 0;  // Angle of rotation
+  let velocity = 5;  // Initial velocity in px/frame
+  const friction = 0.02;  // Friction factor
+
+  function updatePhysics() {
+    if (velocity > 0) {
+      // Reduce velocity by friction
+      velocity -= friction;
+
+      // Update the angle and position
+      position += velocity;
+      angle += velocity * 2;  // Rotational angle increment (simulates rolling)
+
+      // Update the HTML for angle, velocity, and position
+      angleSpan.innerText = angle.toFixed(2);
+      velocitySpan.innerText = velocity.toFixed(2);
+      positionSpan.innerText = position.toFixed(2);
+
+      // Apply CSS transformations
+      pencil.style.transform = `translateX(${position}px) rotate(${angle}deg)`;
+
+      // Continue the animation
+      requestAnimationFrame(updatePhysics);
+    }
+  }
+
+  // Start the simulation
+  updatePhysics();
+</script>
+
+</body>
+</html>
